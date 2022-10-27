@@ -79,9 +79,15 @@ Module.register("MMM-LeagueOfLegends", {
 	updateData: function() {
 		this.loading = {done: 0, total: 0};
 		const displayElements = this.config.displayElements.map((element) => element.name);
-		if (displayElements.includes("tier") || displayElements.includes("stats")) {
+		
+		if (displayElements.includes("tft")) {
+			this.loading.total += 1;
+			this.getTFTRankData();
+		}
+		else if (displayElements.includes("tier") || displayElements.includes("stats")) {
 			this.loading.total += 1;
 			this.getRankData();
+			this.getTFTRankData();
 		}
 		if (displayElements.includes("history")) {
 			this.loading.total += 1;
@@ -131,6 +137,15 @@ Module.register("MMM-LeagueOfLegends", {
 			console.error(self.name, "No data for the summoner found");
 		}
 		var urlApi = `https://${this.config.region}.api.riotgames.com/lol/league/v4/entries/by-summoner/${this.summonerData.id}?api_key=${this.config.apiKey}`;
+
+		this.sendRequest(urlApi, this.processRankData);
+	},
+	
+	getTFTRankData: function() {
+		if (!this.summonerData) {
+			console.error(self.name, "No data for the summoner found");
+		}
+		var urlApi = `https://${this.config.region}.api.riotgames.com/tft/league/v1/entries/by-summoner/${this.summonerData.id}?api_key=${this.config.apiKey}`;
 
 		this.sendRequest(urlApi, this.processRankData);
 	},
