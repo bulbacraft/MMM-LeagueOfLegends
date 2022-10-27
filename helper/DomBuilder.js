@@ -19,6 +19,9 @@ class DomBuilder {
 		this.config.displayElements.forEach(displayElement => {
 			const name = displayElement.name.toLowerCase();
 			switch(name) {
+				case: "header":
+					wrapper.appendChild(this.getTierDiv(displayElement.config));
+					break;
 				case "tier":
 					wrapper.appendChild(this.getTierDiv(displayElement.config));
 					break;
@@ -178,6 +181,19 @@ class DomBuilder {
 			hotStreakLabel.setAttribute("class", "fa fa-fire");
 			wrapper.appendChild(hotStreakLabel);
 		}
+
+		return wrapper;
+	}
+	
+	getHeaderDiv(config) {
+		const wrapper = document.createElement("div");
+		wrapper.setAttribute("class", "LoL-Header");
+		// create the icon:
+		var rankedTypeLabel = document.createElement("label");
+
+		const winrate = Math.round(q.wins * 100 / (q.wins + q.losses));
+		rankedTypeLabel.innerHTML = `${config.rankedType}`;
+		wrapper.appendChild(rankedTypeLabel);
 
 		return wrapper;
 	}
